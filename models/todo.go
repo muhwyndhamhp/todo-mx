@@ -26,19 +26,21 @@ func (u *Todo) BeforeSave(tx *gorm.DB) (err error) {
 	return
 }
 
-func BuildTodoMeta(formPostPath string) typeext.JSONB {
+func BuildTodoMeta(formPostPath string, todo *Todo) typeext.JSONB {
 	a := typeext.JSONB{}
 	a["Title"] = FormMeta{
 		Label:    "Title",
 		ID:       "todo-title",
 		Name:     "title",
 		FormPath: formPostPath,
+		Value:    todo.Title,
 	}
 	a["Body"] = FormMeta{
 		Label:    "Body",
 		ID:       "todo-body",
 		Name:     "body",
 		FormPath: formPostPath,
+		Value:    todo.Body.String,
 	}
 
 	return a

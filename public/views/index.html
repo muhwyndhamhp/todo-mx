@@ -15,8 +15,8 @@
 
 <body>
     <div class="flex flex-row">
-        <div class="basis-1/2">
-            <h1 class="text-3xl">Todo List</h1>
+        <div class="basis-auto">
+            <h1 class="text-3xl my-10 mx-10">Todo List</h1>
 
             <ul id="todo-list">
                 {{ range .Todos}}
@@ -25,8 +25,8 @@
             </ul>
         </div>
         {{if .NewTodo}}
-        <div class="basis-1/2">
-            <h1 class="mb-4">
+        <div class="basis-auto">
+            <h1 class="text-3xl my-10">
                 Add Todos
             </h1>
             <form 

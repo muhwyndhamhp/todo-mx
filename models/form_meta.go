@@ -5,4 +5,5 @@ type FormMeta struct {
 	ID       string
 	Name     string
 	FormPath string
+	Value    string
 }

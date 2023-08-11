@@ -1,0 +1,10 @@
+{{define "todo_edit"}}
+<form 
+    hx-put="{{.Meta.Title.FormPath}}" 
+    hx-swap="outerHTML" 
+    hx-target="#todo-item-parent"
+    hx-indicator="#spinner"
+    hx-on::after-request="this.reset()">
+    {{template "todo_form" .}}
+</form>
+{{end}}

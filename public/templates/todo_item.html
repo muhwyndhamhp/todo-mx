@@ -1,6 +1,6 @@
 {{define "todo_item"}}
 {{block "film-list-element" .}}
-<li class="p-4 max-w-7xl mx-10 my-2 
+<li id="todo-item-parent" class="p-4 max-w-4xl mx-10 my-2 
     bg-white 
     rounded-xl shadow-lg 
     flex items-center space-x-4" 
@@ -12,12 +12,20 @@
     <div class="shrink-0">
         <img class="h-12 w-12" src="/assets/notes.jpg" alt="ChitChat Logo">
     </div>
-    <div>
+    <div id="parent-target">
         <h3 class="text-xl font-medium text-black">
             {{.Title}}
         </h3>
         {{.EncodedBody}}
+        <div 
+            hx-get="{{.Meta.EditPath}}"
+            hx-swap="innerHTML" 
+            hx-target="#parent-target"
+            hx-indicator="#spinner">
+            {{template "submit_button"}}
+        </div>
     </div>
+    
 </li>
 {{end}}
 {{end}}

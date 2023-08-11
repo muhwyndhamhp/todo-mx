@@ -1041,10 +1041,6 @@ input[type="range"]::-ms-fill-lower {
   margin-bottom: 0.5rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
 .mr-3 {
   margin-right: 0.75rem;
 }
@@ -1097,16 +1093,16 @@ input[type="range"]::-ms-fill-lower {
   width: 100%;
 }
 
-.max-w-7xl {
-  max-width: 80rem;
+.max-w-4xl {
+  max-width: 56rem;
 }
 
 .shrink-0 {
   flex-shrink: 0;
 }
 
-.basis-1\/2 {
-  flex-basis: 50%;
+.basis-auto {
+  flex-basis: auto;
 }
 
 @keyframes spin {
@@ -1304,10 +1300,6 @@ input[type="range"]::-ms-fill-lower {
 @media (min-width: 640px) {
   .sm\:max-w-2xl {
     max-width: 42rem;
-  }
-
-  .sm\:max-w-sm {
-    max-width: 24rem;
   }
 
   .sm\:text-sm {

@@ -1,7 +1,7 @@
 {{define "mde_input"}}
 <div class="sm:max-w-2xl">
     <label class="text-xl my-10" for="{{.ID}}">{{.Label}}</label>
-    <textarea type="text" name="{{.Name}}" id="{{.ID}}" class="form-control"></textarea>
+    <textarea type="text" name="{{.Name}}" id="{{.ID}}" class="form-control">{{.Value}}</textarea>
 </div>
 <script>
     var addTodoPath = "{{.FormPath}}"
