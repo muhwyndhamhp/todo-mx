@@ -23,6 +23,9 @@ func main() {
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(
 		rate.Limit(20),
 	)))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*.a.run.app", "*.vercel.app", "*://localhost:*"},
+	}))
 
 	e.Static("/dist", "dist")
 	e.Static("/assets", "public/assets")
