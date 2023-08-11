@@ -1,6 +1,6 @@
 # todo-mx
 
-Experimenting SSE with Golang via HTMX
+Experimenting Server Side Rendering with Golang via HTMX
 
 ## Stacks
 - Golang (obviously)
