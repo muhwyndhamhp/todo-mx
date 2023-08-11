@@ -1,0 +1,32 @@
+{{define "mde_input"}}
+<div class="sm:max-w-2xl">
+    <label class="text-xl my-10" for="{{.ID}}">{{.Label}}</label>
+    <textarea type="text" name="{{.Name}}" id="{{.ID}}" class="form-control"></textarea>
+</div>
+<script>
+    var addTodoPath = "{{.FormPath}}"
+
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("{{.ID}}"),
+        autosave: {
+            enable: false
+        },
+        forceSync: true,
+    });
+
+    document.body.addEventListener('htmx:configRequest', function (evt) {
+        if (evt.detail.path != addTodoPath) {
+            return
+        }
+        params = evt.detail.parameters
+        html = simplemde.options.previewRender(params['{{.Name}}'])
+        evt.detail.parameters['{{.Name}}_encoded'] = html
+    })
+
+    document.body.addEventListener('htmx:afterRequest', function (evt) {
+        if (evt.detail.pathInfo.finalRequestPath == addTodoPath) {
+            simplemde.value("")
+        }
+    })
+</script>
+{{end}}

@@ -10,32 +10,39 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/muhwyndhamhp/todo-mx/db"
 	"github.com/muhwyndhamhp/todo-mx/models"
+	"github.com/muhwyndhamhp/todo-mx/utils/constants"
 	"github.com/muhwyndhamhp/todo-mx/utils/scopes"
 )
 
 type FrontendHandler struct {
 }
 
+const (
+	INDEX_PATH    = "/"
+	GET_TODO_PATH = "/todos"
+	ADD_TODO_PATH = "/add-todo"
+)
+
 func NewFrontendHandler(e *echo.Echo) {
 	handler := &FrontendHandler{}
 
 	e.GET("/hello", handler.Hello)
-	e.GET("/", handler.Index)
-	e.GET("/todos", handler.GetTodos)
-	e.POST("/add-todo", handler.AddTodo)
+
+	e.GET(INDEX_PATH, handler.Index)
+	e.GET(GET_TODO_PATH, handler.GetTodos)
+	e.POST(ADD_TODO_PATH, handler.AddTodo)
 }
 
 func (m *FrontendHandler) GetTodos(c echo.Context) error {
 	time.Sleep(1 * time.Second)
-	page, _ := strconv.Atoi(c.QueryParam("page"))
-	pageSize, _ := strconv.Atoi(c.QueryParam("pageSize"))
+	page, _ := strconv.Atoi(c.QueryParam(constants.PAGE))
+	pageSize, _ := strconv.Atoi(c.QueryParam(constants.PAGE_SIZE))
 
 	todos, err := m.GetTodosFromDB(page, pageSize)
 	if err != nil {
 		return err
 	}
-	todos[len(todos)-1].Meta["IsLastItem"] = true
-	todos[len(todos)-1].Meta["Page"] = page + 1
+	AppendLastItemMetadata(page, todos)
 
 	return c.Render(http.StatusOK, "todo_list", todos)
 }
@@ -66,8 +73,7 @@ func (m *FrontendHandler) Index(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	todos[len(todos)-1].Meta["IsLastItem"] = true
-	todos[len(todos)-1].Meta["Page"] = 2
+	AppendLastItemMetadata(1, todos)
 
 	temp := map[string]interface{}{
 		"Todos": todos,
@@ -75,8 +81,9 @@ func (m *FrontendHandler) Index(c echo.Context) error {
 			Title:       "",
 			Body:        pgtype.Text{},
 			EncodedBody: "",
-			Meta:        models.BuildTodoMeta(),
+			Meta:        models.BuildTodoMeta(ADD_TODO_PATH),
 		},
+		"AddPath": ADD_TODO_PATH,
 	}
 	return c.Render(http.StatusOK, "index", temp)
 }
@@ -85,6 +92,14 @@ func (*FrontendHandler) SaveTodoFromDB(value *models.Todo) error {
 	err := db.GetDB().Save(value).Error
 
 	return err
+}
+
+func AppendLastItemMetadata(lastPage int, todos []models.Todo) {
+	if len(todos) <= 1 {
+		return
+	}
+	todos[len(todos)-1].Meta["IsLastItem"] = true
+	todos[len(todos)-1].Meta["Page"] = lastPage + 1
 }
 
 func (*FrontendHandler) GetTodosFromDB(page, pageSize int) ([]models.Todo, error) {

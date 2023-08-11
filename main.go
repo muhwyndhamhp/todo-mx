@@ -28,7 +28,7 @@ func main() {
 	e.Static("/assets", "public/assets")
 	public.NewTemplateHandler(e)
 	public.NewFrontendHandler(e)
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.Get("APP_PORT"))))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.Get(config.APP_PORT))))
 }
 
 func httpErrorHandler(err error, c echo.Context) {

@@ -1,7 +1,8 @@
 package models
 
 type FormMeta struct {
-	Label string
-	ID    string
-	Name  string
+	Label    string
+	ID       string
+	Name     string
+	FormPath string
 }

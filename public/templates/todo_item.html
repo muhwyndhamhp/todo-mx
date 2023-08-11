@@ -1,23 +1,23 @@
 {{define "todo_item"}}
-{{ block "film-list-element" .}}
+{{block "film-list-element" .}}
 <li class="p-4 max-w-7xl mx-10 my-2 
-bg-white 
-rounded-xl shadow-lg 
-flex items-center space-x-4"
-{{if .Meta.IsLastItem }}
-    hx-get="/todos?page={{.Meta.Page}}&pageSize=5"
-    hx-trigger="revealed"
-    hx-swap="afterend"
-{{end}}>
+    bg-white 
+    rounded-xl shadow-lg 
+    flex items-center space-x-4" 
+    {{if .Meta.IsLastItem}} 
+        hx-get="/todos?page={{.Meta.Page}}&pageSize=5"
+        hx-trigger="revealed" 
+        hx-swap="afterend" 
+    {{end}}>
     <div class="shrink-0">
         <img class="h-12 w-12" src="/assets/notes.jpg" alt="ChitChat Logo">
     </div>
     <div>
         <h3 class="text-xl font-medium text-black">
-            {{ .Title }}
+            {{.Title}}
         </h3>
-        {{ .EncodedBody }}
+        {{.EncodedBody}}
     </div>
 </li>
-{{ end }}
+{{end}}
 {{end}}

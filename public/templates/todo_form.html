@@ -1,12 +1,5 @@
 {{define "todo_form"}}
-    <form hx-post="/add-todo" hx-target="#todo-list" hx-swap="beforebegin" hx-indicator="#spinner"
-        hx-on::after-request="this.reset()">
-        {{template "text_input" .Meta.Title}}
-        <div class="sm:max-w-2xl">
-            <label class="text-xl my-10" for="todo-body">Body</label>
-            <textarea type="text" name="body" id="todo-body" class="form-control"></textarea>
-        </div>
-        <script src="/dist/simplemde.js"></script>
-        {{template "submit_button"}}
-    </form>
+{{template "text_input" .Meta.Title}}
+{{template "mde_input" .Meta.Body}}
+{{template "submit_button"}}
 {{end}}

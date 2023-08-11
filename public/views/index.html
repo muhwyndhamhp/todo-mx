@@ -25,10 +25,19 @@
             </ul>
         </div>
         {{if .NewTodo}}
-            <div class="basis-1/2">
-                <h1 class="mb-4">Add Todos</h1>
+        <div class="basis-1/2">
+            <h1 class="mb-4">
+                Add Todos
+            </h1>
+            <form 
+            hx-post="{{.AddPath}}" 
+            hx-target="#todo-list" 
+            hx-swap="beforebegin" 
+            hx-indicator="#spinner"
+            hx-on::after-request="this.reset()">
                 {{template "todo_form" .NewTodo}}
-            </div>
+            </form>
+        </div>
         {{end}}
     </div>
 </body>
