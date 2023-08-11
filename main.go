@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/muhwyndhamhp/todo-mx/config"
 	"github.com/muhwyndhamhp/todo-mx/models"
 	"github.com/muhwyndhamhp/todo-mx/public"
 	"github.com/muhwyndhamhp/todo-mx/utils/resp"
@@ -77,7 +78,7 @@ func main() {
 	e.POST("/add-todo", AddTodos)
 	e.Static("/dist", "dist")
 	e.Static("/assets", "public/assets")
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", "4040")))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.Get("APP_PORT"))))
 }
 
 func AddTodos(c echo.Context) error {
