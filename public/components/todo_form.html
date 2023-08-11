@@ -1,0 +1,18 @@
+{{define "todo_form"}}
+    <form hx-post="/add-todo" hx-target="#todo-list" hx-swap="beforeend" 
+    hx-indicator="#spinner" hx-on::after-request="this.reset()"> 
+        <div class="mb-2">
+            <label for="todo-title">Title</label>
+            <input type="text" name="title" id="todo-title" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label for="todo-body">Body</label>
+            <textarea type="text" name="body" id="todo-body" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
+            Submit
+        </button>
+    </form>
+{{end}}

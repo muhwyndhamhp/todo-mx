@@ -1,0 +1,17 @@
+{{define "todo_item"}}
+    {{ block "film-list-element" .}}
+        <li class="p-4 max-w-7xl mx-10 my-2 bg-white rounded-xl shadow-lg flex items-center space-x-4"s>
+            <div class="shrink-0">
+                <img class="h-12 w-12" src="/assets/notes.jpg" alt="ChitChat Logo">
+            </div>
+            <div>
+                <h3 class="text-xl font-medium text-black">
+                    {{ .Title }}
+                </h3>
+                <p class="text-slate-500">
+                    {{ .Body.String }}
+                </p>
+            </div>
+        </li>
+    {{ end }}
+{{end}}
