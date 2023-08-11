@@ -21,13 +21,17 @@ func (Todo) TableName() string {
 }
 
 func (u *Todo) BeforeSave(tx *gorm.DB) (err error) {
-	a := typeext.JSONB{}
-
-	a["title_label"] = "Title"
-	a["title_id"] = "todo-title"
-	a["title_name"] = "title"
-
-	u.Meta = a
-
+	u.Meta = BuildTodoMeta()
 	return
+}
+
+func BuildTodoMeta() typeext.JSONB {
+	a := typeext.JSONB{}
+	a["Title"] = FormMeta{
+		Label: "Title",
+		ID:    "todo-title",
+		Name:  "title",
+	}
+
+	return a
 }

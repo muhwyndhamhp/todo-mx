@@ -9,7 +9,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/muhwyndhamhp/todo-mx/db"
 	"github.com/muhwyndhamhp/todo-mx/models"
-	"github.com/muhwyndhamhp/todo-mx/utils/typeext"
 )
 
 type FrontendHandler struct {
@@ -49,20 +48,13 @@ func (m *FrontendHandler) Index(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-
-	a := typeext.JSONB{}
-
-	a["title_label"] = "Title"
-	a["title_id"] = "todo-title"
-	a["title_name"] = "title"
-
 	temp := map[string]interface{}{
 		"Todos": todos,
 		"NewTodo": models.Todo{
 			Title:       "",
 			Body:        pgtype.Text{},
 			EncodedBody: "",
-			Meta:        a,
+			Meta:        models.BuildTodoMeta(),
 		},
 	}
 	return c.Render(http.StatusOK, "index", temp)
@@ -76,7 +68,7 @@ func (*FrontendHandler) SaveTodo(value *models.Todo) error {
 
 func (*FrontendHandler) GetTodos() ([]models.Todo, error) {
 	var res []models.Todo
-	err := db.GetDB().Find(&res).Error
+	err := db.GetDB().Order("updated_at desc").Find(&res).Error
 	if err != nil {
 		return nil, err
 	}

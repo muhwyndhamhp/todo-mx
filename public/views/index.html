@@ -24,10 +24,12 @@
                 {{ end }}
             </ul>
         </div>
-        <div class="basis-1/2">
-            <h1 class="mb-4">Add Todos</h1>
-            {{template "todo_form" .NewTodo}}
-        </div>
+        {{if .NewTodo}}
+            <div class="basis-1/2">
+                <h1 class="mb-4">Add Todos</h1>
+                {{template "todo_form" .NewTodo}}
+            </div>
+        {{end}}
     </div>
 </body>
 
