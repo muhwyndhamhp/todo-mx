@@ -8,9 +8,7 @@
                 <h3 class="text-xl font-medium text-black">
                     {{ .Title }}
                 </h3>
-                <p class="text-slate-500">
-                    {{ .Body.String }}
-                </p>
+                {{ .EncodedBody }}
             </div>
         </li>
     {{ end }}
