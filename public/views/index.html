@@ -19,14 +19,14 @@
             <h1 class="text-3xl">Todo List</h1>
 
             <ul id="todo-list">
-                {{ range .}}
+                {{ range .Todos}}
                 {{template "todo_item" .}}
                 {{ end }}
             </ul>
         </div>
         <div class="basis-1/2">
             <h1 class="mb-4">Add Todos</h1>
-            {{template "todo_form"}}
+            {{template "todo_form" .NewTodo}}
         </div>
     </div>
 </body>

@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/muhwyndhamhp/todo-mx/db"
 	"github.com/muhwyndhamhp/todo-mx/models"
+	"github.com/muhwyndhamhp/todo-mx/utils/typeext"
 )
 
 type FrontendHandler struct {
@@ -48,7 +49,23 @@ func (m *FrontendHandler) Index(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.Render(http.StatusOK, "index", todos)
+
+	a := typeext.JSONB{}
+
+	a["title_label"] = "Title"
+	a["title_id"] = "todo-title"
+	a["title_name"] = "title"
+
+	temp := map[string]interface{}{
+		"Todos": todos,
+		"NewTodo": models.Todo{
+			Title:       "",
+			Body:        pgtype.Text{},
+			EncodedBody: "",
+			Meta:        a,
+		},
+	}
+	return c.Render(http.StatusOK, "index", temp)
 }
 
 func (*FrontendHandler) SaveTodo(value *models.Todo) error {

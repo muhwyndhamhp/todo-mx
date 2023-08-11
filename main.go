@@ -27,6 +27,7 @@ func main() {
 
 	tmpl := template.Must(template.ParseGlob("public/views/*.html"))
 	template.Must(tmpl.ParseGlob("public/components/*.html"))
+	template.Must(tmpl.ParseGlob("public/templates/*.html"))
 
 	t := public.NewTemplate(tmpl)
 	e.Renderer = t
