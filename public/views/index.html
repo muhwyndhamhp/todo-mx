@@ -19,7 +19,7 @@
             <h1 class="text-3xl">Todo List</h1>
 
             <ul id="todo-list">
-                {{ range .Todos }}
+                {{ range .}}
                 {{template "todo_item" .}}
                 {{ end }}
             </ul>
