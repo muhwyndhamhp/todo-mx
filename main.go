@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/apsystole/log"
@@ -25,15 +24,9 @@ func main() {
 		rate.Limit(20),
 	)))
 
-	tmpl := template.Must(template.ParseGlob("public/views/*.html"))
-	template.Must(tmpl.ParseGlob("public/components/*.html"))
-	template.Must(tmpl.ParseGlob("public/templates/*.html"))
-
-	t := public.NewTemplate(tmpl)
-	e.Renderer = t
-
 	e.Static("/dist", "dist")
 	e.Static("/assets", "public/assets")
+	public.NewTemplateHandler(e)
 	public.NewFrontendHandler(e)
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.Get("APP_PORT"))))
 }
