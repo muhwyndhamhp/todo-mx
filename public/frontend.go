@@ -21,11 +21,12 @@ type FrontendHandler struct {
 }
 
 const (
-	INDEX_PATH       = "/"
-	GET_TODO_PATH    = "/todos"
-	ADD_TODO_PATH    = "/todos"
-	EDIT_TODO_PATH   = "/todos/:id/edit"
-	UPDATE_TODO_PATH = "/todos/:id"
+	INDEX_PATH              = "/"
+	GET_TODO_PATH           = "/todos"
+	ADD_TODO_PATH           = "/todos"
+	EDIT_TODO_PATH_PREFIX   = "/todos/"
+	EDIT_TODO_PATH_SUFFIX   = "/edit"
+	UPDATE_TODO_PATH_PREFIX = "/todos/"
 )
 
 func NewFrontendHandler(e *echo.Echo) {
@@ -37,8 +38,8 @@ func NewFrontendHandler(e *echo.Echo) {
 	e.GET(GET_TODO_PATH, handler.GetTodos)
 
 	e.POST(ADD_TODO_PATH, handler.AddTodo)
-	e.GET(EDIT_TODO_PATH, handler.EditTodo)
-	e.PUT(UPDATE_TODO_PATH, handler.UpdateTodo)
+	e.GET(EDIT_TODO_PATH_PREFIX+":id"+EDIT_TODO_PATH_SUFFIX, handler.EditTodo)
+	e.PUT(UPDATE_TODO_PATH_PREFIX+":id", handler.UpdateTodo)
 }
 
 func (*FrontendHandler) Hello(c echo.Context) error {
@@ -110,7 +111,7 @@ func (m *FrontendHandler) EditTodo(c echo.Context) error {
 		return errs.Wrap(err)
 	}
 
-	todo.Meta = models.BuildTodoMeta(fmt.Sprintf("/todos/%d", todo.ID), todo)
+	todo.Meta = models.BuildTodoMeta(fmt.Sprintf("%s%d", UPDATE_TODO_PATH_PREFIX, todo.ID), todo)
 
 	return c.Render(http.StatusOK, "todo_edit", todo)
 }
@@ -140,7 +141,12 @@ func AppendLastItemMetadata(lastPage int, todos []models.Todo) {
 		return
 	}
 	for i := range todos {
-		todos[i].Meta["EditPath"] = fmt.Sprintf("/todos/%d/edit", todos[i].ID)
+		todos[i].Meta["EditPath"] = fmt.Sprintf(
+			"%s%d%s",
+			EDIT_TODO_PATH_PREFIX,
+			todos[i].ID,
+			EDIT_TODO_PATH_SUFFIX,
+		)
 	}
 	todos[len(todos)-1].Meta["IsLastItem"] = true
 	todos[len(todos)-1].Meta["Page"] = lastPage + 1
