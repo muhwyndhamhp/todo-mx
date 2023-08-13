@@ -1121,8 +1121,16 @@ input[type="range"]::-ms-fill-lower {
   flex-shrink: 0;
 }
 
+.basis-40 {
+  flex-basis: 10rem;
+}
+
 .basis-auto {
   flex-basis: auto;
+}
+
+.basis-1\/2 {
+  flex-basis: 50%;
 }
 
 @keyframes spin {
