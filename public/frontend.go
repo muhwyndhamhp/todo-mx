@@ -13,6 +13,7 @@ import (
 	"github.com/muhwyndhamhp/todo-mx/models"
 	"github.com/muhwyndhamhp/todo-mx/utils/constants"
 	"github.com/muhwyndhamhp/todo-mx/utils/errs"
+	"github.com/muhwyndhamhp/todo-mx/utils/markd"
 	"github.com/muhwyndhamhp/todo-mx/utils/scopes"
 	"gorm.io/gorm"
 )
@@ -96,8 +97,14 @@ func (m *FrontendHandler) UpdateTodo(c echo.Context) error {
 			String: c.FormValue("body"),
 			Valid:  true,
 		},
-		EncodedBody: template.HTML(c.FormValue("body_encoded")),
 	}
+
+	md, err := markd.ParseMD(c.FormValue("body"))
+	if err != nil {
+		return err
+	}
+
+	td.EncodedBody = template.HTML(md)
 
 	if err := m.UpdateTodoDB(&td); err != nil {
 		return err
@@ -113,8 +120,14 @@ func (m *FrontendHandler) AddTodo(c echo.Context) error {
 			String: c.FormValue("body"),
 			Valid:  true,
 		},
-		EncodedBody: template.HTML(c.FormValue("body_encoded")),
 	}
+
+	md, err := markd.ParseMD(c.FormValue("body"))
+	if err != nil {
+		return err
+	}
+
+	td.EncodedBody = template.HTML(md)
 
 	if err := m.SaveTodoFromDB(&td); err != nil {
 		return err

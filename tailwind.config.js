@@ -2,7 +2,17 @@
 module.exports = {
   content: ["./public/**/*.html"],
   theme: {
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h1: {
+              '@apply text-xl': {},
+            },
+          },
+        },
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
