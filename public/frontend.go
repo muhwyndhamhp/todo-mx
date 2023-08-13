@@ -21,11 +21,13 @@ type FrontendHandler struct {
 }
 
 const (
-	INDEX_PATH              = "/"
-	GET_TODO_PATH           = "/todos"
-	ADD_TODO_PATH           = "/todos"
-	EDIT_TODO_PATH_PREFIX   = "/todos/"
-	EDIT_TODO_PATH_SUFFIX   = "/edit"
+	INDEX_PATH    = "/"
+	GET_TODO_PATH = "/todos"
+	ADD_TODO_PATH = "/todos"
+
+	EDIT_TODO_PATH_PREFIX = "/todos/"
+	EDIT_TODO_PATH_SUFFIX = "/edit"
+
 	UPDATE_TODO_PATH_PREFIX = "/todos/"
 )
 
@@ -44,6 +46,26 @@ func NewFrontendHandler(e *echo.Echo) {
 
 func (*FrontendHandler) Hello(c echo.Context) error {
 	return c.Render(http.StatusOK, "hello", "World")
+}
+
+func (m *FrontendHandler) Index(c echo.Context) error {
+	todos, err := m.GetTodosFromDB(1, 5)
+	if err != nil {
+		return err
+	}
+	AppendLastItemMetadata(1, todos)
+
+	temp := map[string]interface{}{
+		"Todos": todos,
+		"NewTodo": models.Todo{
+			Title:       "",
+			Body:        pgtype.Text{},
+			EncodedBody: "",
+			Meta:        models.BuildTodoMeta(ADD_TODO_PATH, &models.Todo{}),
+		},
+		"AddPath": ADD_TODO_PATH,
+	}
+	return c.Render(http.StatusOK, "index", temp)
 }
 
 func (m *FrontendHandler) GetTodos(c echo.Context) error {
@@ -116,26 +138,6 @@ func (m *FrontendHandler) EditTodo(c echo.Context) error {
 	return c.Render(http.StatusOK, "todo_edit", todo)
 }
 
-func (m *FrontendHandler) Index(c echo.Context) error {
-	todos, err := m.GetTodosFromDB(1, 5)
-	if err != nil {
-		return err
-	}
-	AppendLastItemMetadata(1, todos)
-
-	temp := map[string]interface{}{
-		"Todos": todos,
-		"NewTodo": models.Todo{
-			Title:       "",
-			Body:        pgtype.Text{},
-			EncodedBody: "",
-			Meta:        models.BuildTodoMeta(ADD_TODO_PATH, &models.Todo{}),
-		},
-		"AddPath": ADD_TODO_PATH,
-	}
-	return c.Render(http.StatusOK, "index", temp)
-}
-
 func AppendLastItemMetadata(lastPage int, todos []models.Todo) {
 	if len(todos) <= 1 {
 		return
@@ -177,7 +179,7 @@ func (*FrontendHandler) GetTodosFromDB(page, pageSize int) ([]models.Todo, error
 	var res []models.Todo
 	err := db.GetDB().
 		Scopes(scopes.Paginate(page, pageSize)).
-		Order("updated_at desc").
+		Order("created_at desc").
 		Find(&res).Error
 	if err != nil {
 		return nil, err

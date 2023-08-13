@@ -29,6 +29,7 @@ func main() {
 
 	e.Static("/dist", "dist")
 	e.Static("/assets", "public/assets")
+	e.Static("/style", "public/css")
 	public.NewTemplateHandler(e)
 	public.NewFrontendHandler(e)
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.Get(config.APP_PORT))))

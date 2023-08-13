@@ -2,7 +2,7 @@
 <form 
     hx-put="{{.Meta.Title.FormPath}}" 
     hx-swap="outerHTML" 
-    hx-target="#todo-item-parent"
+    hx-target="#todo-item-parent-{{.ID}}"
     hx-indicator="#spinner"
     hx-on::after-request="this.reset()">
     {{template "todo_form" .}}

@@ -1,8 +1,8 @@
 {{define "todo_item"}}
 {{block "film-list-element" .}}
-<li id="todo-item-parent" class="p-4 max-w-4xl mx-10 my-2 
-    bg-white 
-    rounded-xl shadow-lg 
+<li id="todo-item-parent-{{.ID}}" class="p-4 max-w-4xl mx-10 my-3 
+    bg-indigo-100 
+    rounded-lg drop-shadow-lg shadow-indigo-500 
     flex items-center space-x-4" 
     {{if .Meta.IsLastItem}} 
         hx-get="/todos?page={{.Meta.Page}}&pageSize=5"
@@ -10,19 +10,19 @@
         hx-swap="afterend" 
     {{end}}>
     <div class="shrink-0">
-        <img class="h-12 w-12" src="/assets/notes.jpg" alt="ChitChat Logo">
+        <img class="h-12 w-12" src="/assets/notes.png" alt="ChitChat Logo">
     </div>
-    <div id="parent-target">
+    <div id="parent-target-{{.ID}}">
         <h3 class="text-xl font-medium text-black">
             {{.Title}}
         </h3>
         {{.EncodedBody}}
-        <div 
+        <div class="absolute top-0 right-0"
             hx-get="{{.Meta.EditPath}}"
             hx-swap="innerHTML" 
-            hx-target="#parent-target"
+            hx-target="#parent-target-{{.ID}}"
             hx-indicator="#spinner">
-            {{template "submit_button"}}
+            {{template "edit_button"}}
         </div>
     </div>
     
